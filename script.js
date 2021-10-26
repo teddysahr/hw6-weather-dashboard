@@ -12,6 +12,7 @@ function getInput(event) {
   console.log(cityInput);
   clearCurrentWeather();
   getApi(cityInput);
+  console.log(pic);
 }
 
 function getApi(city) {
@@ -34,14 +35,36 @@ function getApi(city) {
       var humidity = document.createElement("li");
 
       cityName.textContent = data.name;
-      temp.textContent = "Temperature: " + data.main.temp;
-      wind.textContent = "Wind Speed: " + data.wind.speed;
-      humidity.textContent = "Humidity: " + data.main.humidity;
+      temp.textContent = "Temperature: " + data.main.temp + " °F";
+      wind.textContent = "Wind Speed: " + data.wind.speed + " mph";
+      humidity.textContent = "Humidity: " + data.main.humidity + " %";
 
       currentWeatherList.appendChild(cityName);
       currentWeatherList.appendChild(temp);
       currentWeatherList.appendChild(wind);
       currentWeatherList.appendChild(humidity);
+
+      cityLat.push(data.coord.lat);
+      cityLon.push(data.coord.lon);
+    });
+}
+
+let cityLat = [];
+
+var cityLon = [];
+
+let pic = cityLat.pop();
+
+function getFiveDay(lat, lon) {
+  var requestFiveDay = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=f58e0adad5d2bd441a1a32ca9f7c08a4`;
+
+  fetch(requestFiveDay)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log("Fetch Response \n-------------");
+      console.log(data);
     });
 }
 
